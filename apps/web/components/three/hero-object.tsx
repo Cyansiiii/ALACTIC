@@ -31,8 +31,24 @@ export function HeroObject({ className }: { className?: string }) {
   const wrap = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [onscreen, setOnscreen] = useState(true);
+  const [armed, setArmed] = useState(false);
 
   const live = desktop && !reduced && !saveData;
+
+  // Progressive enhancement: the poster is the first paint. three.js (~1 MB) and
+  // shader compilation start on first interaction, or after a quiet fallback delay,
+  // so they never compete with the initial load.
+  useEffect(() => {
+    if (!live) return;
+    const arm = () => setArmed(true);
+    const events = ["pointermove", "pointerdown", "wheel", "keydown", "touchstart", "scroll"] as const;
+    events.forEach((e) => window.addEventListener(e, arm, { once: true, passive: true }));
+    const timer = setTimeout(arm, 6000);
+    return () => {
+      clearTimeout(timer);
+      events.forEach((e) => window.removeEventListener(e, arm));
+    };
+  }, [live]);
 
   useEffect(() => {
     heroMotion.animate = !reduced;
@@ -63,7 +79,7 @@ export function HeroObject({ className }: { className?: string }) {
         sizes="(min-width: 768px) 60vw, 120vw"
         className={cn("object-contain transition-opacity duration-700", live && ready ? "opacity-0" : "opacity-100")}
       />
-      {live && (
+      {live && armed && (
         <div className={cn("absolute inset-0 transition-opacity duration-700", ready ? "opacity-100" : "opacity-0")}>
           <VaultScene theme={theme} active={onscreen} onReady={() => setReady(true)} />
         </div>

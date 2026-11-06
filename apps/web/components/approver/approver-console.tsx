@@ -230,7 +230,7 @@ function Detail({ approval: a, view, now }: { approval: Approval; view: View; no
             <dt className="text-fg-subtle">Leaf</dt><dd><Hash value={e.eligibility.leaf} /></dd>
             <dt className="text-fg-subtle">Root</dt><dd><Hash value={e.eligibility.root} /></dd>
             <dt className="text-fg-subtle">Proof</dt>
-            <dd className="space-y-1">{e.eligibility.proof.map((p) => <Hash key={p} value={p} head={8} tail={6} className="flex" />)}</dd>
+            <dd className="space-y-1.5">{e.eligibility.proof.map((p) => <Hash key={p} value={p} head={8} tail={6} className="flex" />)}</dd>
           </dl>
           <h3 className="label-bracket mt-6 block">Intent (what you sign)</h3>
           <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 rounded-lg border border-line p-4 text-small">

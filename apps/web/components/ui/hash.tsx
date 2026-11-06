@@ -45,7 +45,7 @@ export function Hash({
             setCopied(true);
             setTimeout(() => setCopied(false), 1400);
           }}
-          className="rounded p-0.5 text-fg-subtle transition-colors hover:text-fg"
+          className="grid size-6 shrink-0 place-items-center rounded text-fg-subtle transition-colors hover:text-fg"
           aria-label={copied ? "Copied" : `Copy ${value}`}
         >
           {copied ? (

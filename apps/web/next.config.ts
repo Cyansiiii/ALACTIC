@@ -1,3 +1,4 @@
+import path from "node:path";
 import type { NextConfig } from "next";
 
 // cacheComponents is intentionally OFF: with it, Next keeps hidden pages mounted
@@ -6,6 +7,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   devIndicators: { position: "bottom-right" },
   turbopack: {
+    root: path.join(__dirname, "../.."), // monorepo root (pnpm workspace)
     // wagmi's baseAccount connector → @base-org/account (node build) → @coinbase/cdp-sdk,
     // which has unresolvable optional deps. ALACTIC never uses it; stub it.
     resolveAlias: { "@coinbase/cdp-sdk": "./lib/shims/cdp-sdk.ts" },

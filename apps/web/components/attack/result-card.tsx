@@ -58,7 +58,7 @@ export function ResultCard({ result }: { result: AttackResult }) {
         )}
 
         <pre className="mt-5 overflow-x-auto rounded-lg border border-white/10 bg-black/40 p-3 font-mono text-[0.75rem] text-[#a0a6bd]" data-lenis-prevent>
-          <span className="text-[#5b6180]">call › </span>
+          <span className="text-[#8a90ab]">call › </span>
           {result.attemptedCall}
         </pre>
 

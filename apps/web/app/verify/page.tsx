@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Verifier } from "@/components/verify/verifier";
 
 export const metadata = { title: "Verify", description: "Independently verify an ALACTIC refund receipt." };
@@ -16,7 +17,15 @@ export default function Page() {
         </p>
       </header>
       <div className="mt-12">
-        <Suspense>
+        {/* useSearchParams renders client-side; reserve the space so the footer doesn't jump (CLS). */}
+        <Suspense
+          fallback={
+            <div className="grid gap-8 lg:grid-cols-2">
+              <div className="space-y-3"><Skeleton className="h-11 w-80 rounded-full" />{[0, 1, 2].map((i) => <Skeleton key={i} className="h-[4.5rem] rounded-lg" />)}</div>
+              <Skeleton className="h-[34rem] rounded-xl" />
+            </div>
+          }
+        >
           <Verifier />
         </Suspense>
       </div>

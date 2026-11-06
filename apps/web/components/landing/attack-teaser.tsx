@@ -93,7 +93,7 @@ function Terminal() {
           if (isCurrent && l.kind !== "prompt") return null;
           return (
             <p key={`${script}-${i}`} className={cn("flex gap-3", color[l.kind], l.kind === "revert" && "animate-[shake_.4s_ease-in-out]")}>
-              <span className="shrink-0 text-[#5b6180]">{prefix[l.kind]}</span>
+              <span className="shrink-0 text-[#8a90ab]">{prefix[l.kind]}</span>
               <span className="break-all">
                 {text}
                 {isCurrent && <span className="ml-0.5 inline-block h-[1.1em] w-[0.55em] translate-y-[0.2em] animate-pulse bg-current" />}

@@ -24,7 +24,8 @@ export function SceneAsk() {
         <Mono>Signed in as 0x9f3c…a41e · SIWE</Mono>
       </div>
       <Card className="max-w-[70%] rounded-bl-sm">
-        <div className="flex gap-1.5" aria-label="Agent is typing">
+        <div className="flex gap-1.5">
+          <span className="sr-only">Agent is typing</span>
           {[0, 1, 2].map((i) => (
             <span key={i} className="size-2 animate-pulse rounded-full bg-fg-subtle" style={{ animationDelay: `${i * 160}ms` }} />
           ))}
