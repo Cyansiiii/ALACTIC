@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import localFont from "next/font/local";
+import { CursorFollower } from "@/components/layout/cursor";
 import { Footer } from "@/components/layout/footer";
 import { MockIndicator } from "@/components/layout/mock-indicator";
 import { Navbar } from "@/components/layout/navbar";
@@ -64,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
           <Footer />
           <MockIndicator />
+          <CursorFollower />
         </Providers>
       </body>
     </html>

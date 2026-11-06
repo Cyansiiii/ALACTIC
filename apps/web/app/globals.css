@@ -194,3 +194,8 @@ body::after {
 @keyframes reveal-fallback {
   to { visibility: visible; }
 }
+
+@keyframes shake {
+  20%, 60% { transform: translateX(-3px); }
+  40%, 80% { transform: translateX(3px); }
+}
