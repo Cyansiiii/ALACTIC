@@ -2,4 +2,8 @@
 export type Theme = "dark" | "light";
 export const THEME_STORAGE_KEY = "alactic-theme";
 
-export const themeInitScript = `(function(){try{var t=localStorage.getItem("${THEME_STORAGE_KEY}");document.documentElement.dataset.theme=(t==="light"||t==="dark")?t:"dark"}catch(e){document.documentElement.dataset.theme="dark"}})()`;
+/**
+ * Runs before first paint: applies the saved theme, and sets data-motion="on"
+ * when the user hasn't asked for reduced motion (enables [data-reveal] hiding).
+ */
+export const themeInitScript = `(function(){var d=document.documentElement;try{var t=localStorage.getItem("${THEME_STORAGE_KEY}");d.dataset.theme=(t==="light"||t==="dark")?t:"dark"}catch(e){d.dataset.theme="dark"}if(!matchMedia("(prefers-reduced-motion: reduce)").matches)d.dataset.motion="on"})()`;

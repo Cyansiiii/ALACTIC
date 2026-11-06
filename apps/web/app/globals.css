@@ -185,3 +185,12 @@ body::after {
 @keyframes shimmer {
   to { transform: translateX(100%); }
 }
+
+/* Pre-reveal hiding: only when motion is on. Fallback reveals after 2.5s if JS fails. */
+[data-motion="on"] [data-reveal] {
+  visibility: hidden;
+  animation: reveal-fallback 0s 2.5s forwards;
+}
+@keyframes reveal-fallback {
+  to { visibility: visible; }
+}
