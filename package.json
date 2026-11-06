@@ -1,0 +1,10 @@
+{
+  "name": "alactic",
+  "private": true,
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "dev:web": "pnpm --filter @alactic/web dev",
+    "build:web": "pnpm --filter @alactic/web build",
+    "lint:web": "pnpm --filter @alactic/web lint"
+  }
+}

@@ -1,0 +1,127 @@
+/*
+ * ALACTIC design tokens — the single source of truth.
+ * Colors, radii, shadows, spacing, type scale, easing and durations live here.
+ * Tailwind utilities are mapped from these in app/globals.css (@theme inline).
+ * JS motion code mirrors only easing/durations in lib/motion/tokens.ts.
+ */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Surfaces */
+  --bg: #06070b;
+  --bg-elev: #0a0c13;
+  --surface: #0f121b;
+  --surface-2: #161a27;
+  --glass: rgb(18 21 33 / 0.55);
+  --line: rgb(255 255 255 / 0.08);
+  --line-strong: rgb(255 255 255 / 0.16);
+
+  /* Text (all AA on --bg) */
+  --fg: #eef0f7;
+  --fg-muted: #a0a6bd;
+  --fg-subtle: #7d839f;
+  --fg-inverse: #06070b;
+
+  /* Accent: action / brand. accent = text & glows, accent-strong = fills under white text */
+  --accent: #8b7dff;
+  --accent-strong: #5a48f2;
+  --accent-fg: #ffffff;
+  --accent-soft: rgb(124 108 255 / 0.14);
+
+  /* Semantic status (never the only signal — always paired with icon + label) */
+  --verified: #3ddc97;
+  --verified-soft: rgb(61 220 151 / 0.12);
+  --danger: #ff6b79;
+  --danger-soft: rgb(255 92 108 / 0.12);
+  --warn: #f5b544;
+  --warn-soft: rgb(245 181 68 / 0.12);
+
+  /* Depth */
+  --shadow-1: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-2: 0 1px 0 rgb(255 255 255 / 0.06) inset, 0 12px 32px -12px rgb(0 0 0 / 0.6);
+  --shadow-3: 0 1px 0 rgb(255 255 255 / 0.08) inset, 0 32px 80px -24px rgb(0 0 0 / 0.75);
+  --shadow-glow: 0 0 0 1px rgb(139 125 255 / 0.4), 0 12px 48px -8px rgb(90 72 242 / 0.55);
+
+  --grain-opacity: 0.05;
+  --hero-glow: radial-gradient(60% 60% at 70% 45%, rgb(90 72 242 / 0.28), transparent 70%);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f4f3ee;
+  --bg-elev: #fbfaf7;
+  --surface: #ffffff;
+  --surface-2: #eceae3;
+  --glass: rgb(255 255 255 / 0.6);
+  --line: rgb(11 13 22 / 0.1);
+  --line-strong: rgb(11 13 22 / 0.2);
+
+  --fg: #0b0d16;
+  --fg-muted: #474d63;
+  --fg-subtle: #5f657c;
+  --fg-inverse: #f4f3ee;
+
+  --accent: #4b3be8;
+  --accent-strong: #4b3be8;
+  --accent-fg: #ffffff;
+  --accent-soft: rgb(75 59 232 / 0.1);
+
+  --verified: #0b7f4f;
+  --verified-soft: rgb(11 127 79 / 0.1);
+  --danger: #c8243a;
+  --danger-soft: rgb(200 36 58 / 0.08);
+  --warn: #8f5a00;
+  --warn-soft: rgb(196 128 0 / 0.12);
+
+  --shadow-1: 0 1px 2px rgb(11 13 22 / 0.06);
+  --shadow-2: 0 12px 32px -12px rgb(11 13 22 / 0.18);
+  --shadow-3: 0 32px 80px -24px rgb(11 13 22 / 0.25);
+  --shadow-glow: 0 0 0 1px rgb(75 59 232 / 0.35), 0 12px 40px -10px rgb(75 59 232 / 0.35);
+
+  --grain-opacity: 0.035;
+  --hero-glow: radial-gradient(60% 60% at 70% 45%, rgb(75 59 232 / 0.16), transparent 70%);
+}
+
+:root {
+  /* Radii */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 40px;
+  --radius-pill: 999px;
+
+  /* Layout & spacing */
+  --container: 1320px;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --section-y: clamp(5rem, 11vw, 10rem);
+  --nav-h: 72px;
+
+  /* Fluid type scale (320px → 1440px) */
+  --fs-display-2xl: clamp(2.75rem, 1.6rem + 6.2vw, 7.25rem);
+  --fs-display-xl: clamp(2.375rem, 1.6rem + 4vw, 5rem);
+  --fs-h1: clamp(2rem, 1.45rem + 2.8vw, 3.75rem);
+  --fs-h2: clamp(1.625rem, 1.3rem + 1.6vw, 2.5rem);
+  --fs-h3: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
+  --fs-body-lg: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-micro: 0.75rem;
+
+  --tracking-display: -0.022em;
+  --tracking-heading: -0.018em;
+  --tracking-label: 0.08em;
+
+  /* Motion (mirrored in lib/motion/tokens.ts) */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.3, 1);
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+  --dur-fast: 160ms;
+  --dur-base: 280ms;
+  --dur-slow: 560ms;
+  --dur-reveal: 900ms;
+}
