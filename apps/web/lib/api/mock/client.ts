@@ -77,7 +77,8 @@ export function createMockClient(): AlacticClient {
   const claimedLeaves = new Set<string>();
   let session: SessionStatus = sessionFixture();
 
-  for (const s of sampleReceipts()) receipts.set(s.id, s.receipt);
+  const samples = sampleReceipts(); // built once: ids must stay stable for getReceipt()
+  for (const s of samples) receipts.set(s.id, s.receipt);
   seedApprovals();
 
   function transition(t: Ticket, status: TicketStatus, note?: string): Ticket {
@@ -287,7 +288,7 @@ export function createMockClient(): AlacticClient {
 
     async listSampleReceipts() {
       await latency(100, 200);
-      return sampleReceipts().map(({ id, label }) => ({ id, label }));
+      return samples.map(({ id, label }) => ({ id, label }));
     },
 
     async runAttack(kind: AttackKind): Promise<AttackResult> {
