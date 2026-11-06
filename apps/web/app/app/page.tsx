@@ -1,12 +1,7 @@
-import { EmptyState } from "@/components/ui/states";
+import { ClaimApp } from "@/components/app/claim-app";
 
-export const metadata = { title: "Claim" };
+export const metadata = { title: "Claim", description: "Ask the ALACTIC refund agent and claim a committed refund." };
 
 export default function Page() {
-  return (
-    <section className="container-x pb-24 pt-[calc(var(--nav-h)+4rem)]">
-      <p className="label-bracket">/app</p>
-      <EmptyState className="mt-6" title="Coming in a later phase" description="This route is scaffolded; the UI lands in its build phase." />
-    </section>
-  );
+  return <ClaimApp />;
 }

@@ -58,6 +58,12 @@ export const AgentIdentity = z.object({
 });
 export type AgentIdentity = z.infer<typeof AgentIdentity>;
 
+// ─── Sign-in (PRD IDN-1: SIWE-style signed message) ───────────────────────
+export const SignInInput = z.object({ address: Address, message: z.string(), signature: Hex });
+export type SignInInput = z.infer<typeof SignInInput>;
+export const SignInResult = z.object({ address: Address, signInHash: Hash32, expiresAt: IsoDate });
+export type SignInResult = z.infer<typeof SignInResult>;
+
 // ─── Session key status (PRD §4.3, UI-4) ───────────────────────────────────
 export const SessionStatus = z.object({
   sessionKey: Address,

@@ -17,6 +17,8 @@ import type {
   SendMessageInput,
   SendMessageResult,
   SessionStatus,
+  SignInInput,
+  SignInResult,
   SubmitApprovalInput,
   Ticket,
   VerifyResult,
@@ -25,6 +27,8 @@ import { createHttpClient } from "./http/client";
 import { createMockClient } from "./mock/client";
 
 export interface AlacticClient {
+  /** Verify a signed sign-in message and start a session (sets a cookie on the real backend). */
+  signIn(input: SignInInput): Promise<SignInResult>;
   /** ENS-resolved agent identity (receiptKey, vault, policyHash, roots…). */
   getAgent(): Promise<AgentIdentity>;
   /** Current session-key caps and usage. */

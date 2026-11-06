@@ -128,6 +128,12 @@ export function createMockClient(): AlacticClient {
   }
 
   return {
+    async signIn({ address, signature }) {
+      await latency(300, 600);
+      // MOCK: the signature is not verified here. The real backend must recover the signer.
+      return { address, signInHash: h(`siwe:${address}:${signature}`), expiresAt: new Date(Date.now() + 6 * 3600_000).toISOString() };
+    },
+
     async getAgent() {
       await latency(200, 500);
       return { ...agentFixture, resolvedAt: now() };
@@ -161,6 +167,7 @@ export function createMockClient(): AlacticClient {
           timeline: [{ status: "open", at: now() }],
         } satisfies Ticket);
       tickets.set(id, ticket);
+      const statusBefore = ticket.status;
       ticket = transition(ticket, "triaging");
 
       const reply = REPLIES[intent];
@@ -199,6 +206,9 @@ export function createMockClient(): AlacticClient {
         };
         ticket = transition(ticket, "answered");
         ticket = transition(ticket, tier === 3 ? "awaiting_approval" : "eligible", `Snapshot leaf found · Tier ${tier}`);
+      } else if (ticket.eligibility) {
+        // Follow-up on an existing claim ticket: keep its claim state, just log the answer.
+        ticket = transition(ticket, statusBefore === "open" ? "answered" : statusBefore, "Follow-up answered");
       } else {
         ticket = transition({ ...ticket, category: "info", tier: 0 }, "answered");
       }

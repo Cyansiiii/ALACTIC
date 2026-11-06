@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { GeistMono } from "geist/font/mono";
+import { GeistSans } from "geist/font/sans";
 import localFont from "next/font/local";
 import { CursorFollower } from "@/components/layout/cursor";
 import { Footer } from "@/components/layout/footer";
+import { InlineScript } from "@/components/layout/inline-script";
 import { MockIndicator } from "@/components/layout/mock-indicator";
 import { Navbar } from "@/components/layout/navbar";
 import { Providers } from "@/components/providers/providers";
@@ -19,16 +21,15 @@ const clash = localFont({
   preload: true,
 });
 
-const instrument = Instrument_Serif({
-  weight: "400",
-  style: ["normal", "italic"],
-  subsets: ["latin"],
+// All fonts are self-hosted (no build-time fetch from Google). Geist ships in the `geist` package.
+const instrument = localFont({
+  src: [
+    { path: "./fonts/InstrumentSerif-Regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/InstrumentSerif-Italic.woff2", weight: "400", style: "italic" },
+  ],
   variable: "--font-instrument",
   display: "swap",
 });
-
-const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
-const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap", preload: false });
 
 export const metadata: Metadata = {
   title: { default: "ALACTIC · The refund agent that cannot steal", template: "%s · ALACTIC" },
@@ -49,10 +50,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       data-theme="dark"
       suppressHydrationWarning
-      className={`${clash.variable} ${instrument.variable} ${geist.variable} ${geistMono.variable} antialiased`}
+      className={`${clash.variable} ${instrument.variable} ${GeistSans.variable} ${GeistMono.variable} antialiased`}
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <InlineScript html={themeInitScript} />
       </head>
       <body>
         <a href="#main" className="sr-only z-[200] rounded-full bg-fg px-4 py-2 text-fg-inverse focus:not-sr-only focus:fixed focus:left-4 focus:top-4">

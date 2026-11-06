@@ -2,7 +2,7 @@
 /** React Query bindings for the data client. Components import these, not the client. */
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getClient } from "./client";
-import type { AttackKind, Receipt, SendMessageInput, SubmitApprovalInput } from "./schema";
+import type { AttackKind, Receipt, SendMessageInput, SignInInput, SubmitApprovalInput } from "./schema";
 
 export const qk = {
   agent: ["agent"] as const,
@@ -12,6 +12,9 @@ export const qk = {
   samples: ["receipts", "samples"] as const,
   approvals: ["approvals"] as const,
 };
+
+export const useSignIn = () =>
+  useMutation({ mutationFn: (input: SignInInput) => getClient().signIn(input) });
 
 export const useAgent = () =>
   useQuery({ queryKey: qk.agent, queryFn: () => getClient().getAgent(), staleTime: 5 * 60_000 });

@@ -14,6 +14,7 @@ import {
   Receipt,
   SendMessageResult,
   SessionStatus,
+  SignInResult,
   Ticket,
   VerifyResult,
 } from "../schema";
@@ -60,6 +61,7 @@ export function createHttpClient(baseUrl: string): AlacticClient {
   }
 
   return {
+    signIn: (input) => request(SignInResult, "/auth/siwe", { method: "POST", body: input }),
     getAgent: () => request(AgentIdentity, "/agent"),
     getSession: () => request(SessionStatus, "/session"),
     sendMessage: (input) => request(SendMessageResult, "/chat", { method: "POST", body: input }),
