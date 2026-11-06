@@ -3,7 +3,7 @@
  * Mirrors the PRD flows (A: Tier-2 refund, B: Tier-3, C: attacks) closely enough
  * to build and demo the UI. Replace by setting NEXT_PUBLIC_DATA_SOURCE=http.
  */
-import { sleep } from "@/lib/utils";
+import { formatCents, sleep } from "@/lib/utils";
 import type { AlacticClient } from "../client";
 import type {
   Approval,
@@ -88,44 +88,57 @@ export function createMockClient(): AlacticClient {
   }
 
   function seedApprovals() {
-    const ticketId = "01JALCT0T3QUEUE000042";
-    const amountCents = SNAPSHOT["INC-002"].amountCents;
-    const beneficiary = addr("demo-user-lena");
-    approvals.set(ticketId, {
-      ticketId,
-      incidentId: "INC-002",
-      intent: {
-        ticketId: h(ticketId),
-        incidentId: incidentIdBytes("INC-002"),
-        beneficiary,
-        amountCents,
-        evidenceHash: h(`evidence:${ticketId}`),
-        deadline: Math.floor(Date.now() / 1000) + 24 * 3600,
-      },
-      intentHash: h(`intent:${ticketId}`),
-      status: "pending",
-      approver: MOCK_APPROVER,
-      signature: null,
-      approvedAt: null,
-      delaySeconds: 600,
-      evidence: {
-        question: "My LP position was drained in the oracle exploit. Am I covered?",
-        aiExplanation: REPLIES.exploit.content,
-        citations: REPLIES.exploit.citations,
-        eligibility: {
-          incidentId: "INC-002",
+    const make = (ticketId: string, who: string, amountCents: number, minutesAgo: number, extra: Partial<Approval> = {}): Approval => {
+      const beneficiary = addr(who);
+      return {
+        ticketId,
+        incidentId: "INC-002",
+        intent: {
+          ticketId: h(ticketId),
+          incidentId: incidentIdBytes("INC-002"),
           beneficiary,
           amountCents,
-          leaf: leafHash("INC-002", beneficiary, amountCents),
-          proof: [h("p0"), h("p1"), h("p2"), h("p3")],
-          root: INCIDENTS["INC-002"].root,
-          claimed: false,
+          evidenceHash: h(`evidence:${ticketId}`),
+          deadline: Math.floor(Date.now() / 1000) + 24 * 3600,
         },
-        inference: inference(`${ticketId}:inf`),
-      },
-      txHash: null,
-      createdAt: new Date(Date.now() - 18 * 60_000).toISOString(),
-    });
+        intentHash: h(`intent:${ticketId}`),
+        status: "pending",
+        approver: MOCK_APPROVER,
+        signature: null,
+        approvedAt: null,
+        // MOCK: PRD demo delay is 600s "shortened by config"; 45s keeps the demo watchable.
+        delaySeconds: 45,
+        evidence: {
+          question: "My LP position was drained in the oracle exploit. Am I covered?",
+          aiExplanation: REPLIES.exploit.content.replace("$6,500.00", formatCents(amountCents)),
+          citations: REPLIES.exploit.citations,
+          eligibility: {
+            incidentId: "INC-002",
+            beneficiary,
+            amountCents,
+            leaf: leafHash("INC-002", beneficiary, amountCents),
+            proof: [h(`${ticketId}p0`), h(`${ticketId}p1`), h(`${ticketId}p2`), h(`${ticketId}p3`)],
+            root: INCIDENTS["INC-002"].root,
+            claimed: false,
+          },
+          inference: inference(`${ticketId}:inf`),
+        },
+        txHash: null,
+        createdAt: new Date(Date.now() - minutesAgo * 60_000).toISOString(),
+        ...extra,
+      };
+    };
+    const list = [
+      make("01JALCT0T3QUEUE000042", "demo-user-lena", 650_000, 18),
+      make("01JALCT0T3QUEUE000043", "demo-user-omar", 284_150, 7),
+      make("01JALCT0T3DONE0000031", "demo-user-kai", 910_000, 190, {
+        status: "executed",
+        signature: h("sig:approver:31"),
+        approvedAt: new Date(Date.now() - 170 * 60_000).toISOString(),
+        txHash: h("tx:01JALCT0T3DONE0000031"),
+      }),
+    ];
+    for (const a of list) approvals.set(a.ticketId, a);
   }
 
   return {
